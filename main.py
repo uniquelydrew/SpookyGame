@@ -1,40 +1,61 @@
-import pygame as pg
-from settings import WIDTH, HEIGHT, FPS
-from assets import init as assets_init
-from scenes.state import SceneManager
-from scenes.title import TitleScene  # implements start->PlayScene, shows highscores
+import pygame
+import time
+import random
+import math
 
-class Keys:
-    def __init__(self): self.left=self.right=self.jump=self.attack=False
-    def read(self):
-        k = pg.key.get_pressed()
-        self.left  = k[pg.K_a] or k[pg.K_LEFT]
-        self.right = k[pg.K_d] or k[pg.K_RIGHT]
-        self.jump  = k[pg.K_w] or k[pg.K_UP] or k[pg.K_SPACE]
-        self.attack= k[pg.K_j] or k[pg.K_k] or k[pg.K_LCTRL]
 
-class Game:
-    def __init__(self):
-        pg.init(); assets_init()
-        self.screen = pg.display.set_mode((WIDTH, HEIGHT))
-        self.clock = pg.time.Clock()
-        self.manager = SceneManager(TitleScene(self))
-        self.keys = Keys()
+# Initialize Pygame
+pygame.init()
+screen = pygame.display.set_mode((800, 600))
+pygame.display.set_caption("Rhythm Battle")
+clock = pygame.time.Clock()
 
-    def to_gameover(self, score): from .scenes.gameover import GameOverScene; self.manager.scene = GameOverScene(self, score)
-    def to_play(self):             from .scenes.play import PlayScene;       self.manager.scene = PlayScene(self)
+# Load and play music
+pygame.mixer.music.load('WhatsThis.ogg')  # Replace with your actual music file
+pygame.mixer.music.play()
 
-    def run(self):
-        running=True
-        while running:
-            for e in pg.event.get():
-                if e.type == pg.QUIT: running=False
-                self.manager.handle_event(e)
-            self.keys.read()
-            dt = self.clock.tick(FPS) / 1000.0
-            self.manager.update(dt)
-            self.manager.draw(self.screen)
-            pg.display.flip()
+# Constants
+BPM = 120
+BEAT_INTERVAL = 60 / BPM
+TOLERANCE = 0.2  # How much error (in seconds) is allowed for "perfect"
 
-if __name__ == "__main__":
-    Game().run()
+# Variables
+last_beat_time = time.time()
+score = 0
+
+def calculate_accuracy(press_time, beat_time):
+    diff = abs(press_time - beat_time)
+    if diff <= TOLERANCE:
+        return max(0, 1 - (diff / TOLERANCE))  # Scale damage 0.0 to 1.0
+    return 0
+
+running = True
+while running:
+    current_time = time.time()
+    time_since_last_beat = current_time - last_beat_time
+
+    # Advance beat
+    if time_since_last_beat >= BEAT_INTERVAL:
+        last_beat_time = current_time
+        print("Beat!")
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+        # Check for keypress (attack)
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            accuracy = calculate_accuracy(current_time, last_beat_time)
+            damage = round(accuracy * 10)  # Scale damage out of 10
+            if damage > 0:
+                print(f"Attack! Accuracy: {accuracy:.2f} → Damage: {damage}")
+                score += damage
+            else:
+                print("Miss! Too off-beat.")
+
+    screen.fill((0, 0, 0))
+    pygame.display.flip()
+    clock.tick(60)
+
+pygame.quit()
+print(f"Final Score: {score}")
