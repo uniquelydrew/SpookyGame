@@ -1,5 +1,6 @@
 import pygame
-from .config import RED, GREEN
+from .config import RED, GREEN, PUMPKIN
+
 
 class Enemy:
     def __init__(self, x=500, y=400):
@@ -7,7 +8,7 @@ class Enemy:
         self.health = self.max_health
         self.x = x
         self.y = y
-        self.image = pygame.image.load("assets/sprites/pumpkin.png")
+        self.image = pygame.image.load(PUMPKIN)
 
     def take_damage(self, dmg):
         self.health = max(0, self.health - dmg)

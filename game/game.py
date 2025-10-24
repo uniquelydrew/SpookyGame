@@ -1,6 +1,6 @@
 import pygame
 import time
-from .config import SCREEN_WIDTH, SCREEN_HEIGHT, WHITE
+from .config import SCREEN_WIDTH, SCREEN_HEIGHT, WHITE, GRAVEYARD, TRACK
 from .player import Player
 from .enemy import Enemy
 from .hud import draw_score, draw_win_message
@@ -12,16 +12,16 @@ class Game:
         self.background = None
         pygame.init()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-        self.background = pygame.image.load("assets/backgrounds/graveyard.jpg").convert()
+        self.background = pygame.image.load(GRAVEYARD).convert()
 
         pygame.display.set_caption("What's This")
         self.clock = pygame.time.Clock()
-        pygame.mixer.music.load('assets/WhatsThis.ogg')
+        pygame.mixer.music.load(TRACK)
         pygame.mixer.music.play()
 
         pygame.display.set_caption("What's This")
         self.clock = pygame.time.Clock()
-        pygame.mixer.music.load('assets/WhatsThis.ogg')
+        pygame.mixer.music.load(TRACK)
         pygame.mixer.music.play()
 
         self.running = True

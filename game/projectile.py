@@ -3,9 +3,12 @@ import pygame
 import os
 import math
 
+from .config import SKULL
+
+
 class SkullProjectile:
     def __init__(self, x, y):
-        self.image = pygame.image.load(os.path.join("assets", "sprites", "skull.png")).convert_alpha()
+        self.image = pygame.image.load(SKULL).convert_alpha()
         self.start_x = x
         self.start_y = y
         self.rect = self.image.get_rect(center=(x, y))
