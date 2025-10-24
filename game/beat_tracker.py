@@ -14,6 +14,10 @@ class BeatTracker:
 
     def calculate_accuracy(self, press_time):
         diff = abs(press_time - self.last_beat_time)
-        if diff <= TOLERANCE:
-            return max(0, 1 - (diff / TOLERANCE))
-        return 0
+        if diff <= 0.05:
+            return 1.0, "Perfect"
+        elif diff <= 0.15:
+            return 0.5, "Good"
+        else:
+            return 0.0, "Miss"
+

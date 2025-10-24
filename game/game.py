@@ -3,7 +3,7 @@ import time
 from .config import SCREEN_WIDTH, SCREEN_HEIGHT, WHITE, GRAVEYARD, TRACK
 from .player import Player
 from .enemy import Enemy
-from .hud import draw_score, draw_win_message
+from .hud import draw_score, draw_win_message, draw_judgment
 from .beat_tracker import BeatTracker
 from .projectile import SkullProjectile
 
@@ -30,11 +30,15 @@ class Game:
         self.beat_tracker = BeatTracker()
         self.score = 0
         self.projectiles = []
+        self.judgment_text = ""
+        self.judgment_timer = 0
 
     def run(self):
         while self.running:
             beat_hit = self.beat_tracker.update()
             self.handle_events()
+            if self.judgment_timer > 0:
+                self.judgment_timer -= 1
             self.update_projectiles()
             self.draw()
             self.clock.tick(60)
@@ -47,8 +51,10 @@ class Game:
                 self.running = False
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                accuracy = self.beat_tracker.calculate_accuracy(time.time())
+                accuracy, judgment = self.beat_tracker.calculate_accuracy(time.time())
                 damage = round(accuracy * 10)
+                self.judgment_text = judgment
+                self.judgment_timer = 30  # show for ~0.5 seconds at 60fps
                 if damage > 0:
                     projectile = SkullProjectile(self.player.x + 50, self.player.y + 30)
                     projectile.damage = damage
@@ -61,6 +67,9 @@ class Game:
         draw_score(self.screen, self.score)
         for projectile in self.projectiles:
             projectile.draw(self.screen)
+
+        if self.judgment_timer > 0:
+            draw_judgment(self.screen, self.judgment_text, (SCREEN_WIDTH // 2 - 60, 200), self.judgment_timer)
 
         if self.enemy.is_defeated():
             draw_win_message(self.screen)
