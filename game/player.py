@@ -2,7 +2,7 @@ import pygame
 from .config import WHITE
 
 class Player:
-    def __init__(self, x=200, y=300):
+    def __init__(self, x=200, y=400):
         self.image = pygame.image.load('assets/sprites/player.png')
         # self.image = pygame.Surface((80, 80))
         # self.image.fill(WHITE)

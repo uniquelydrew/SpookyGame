@@ -9,8 +9,16 @@ from .projectile import SkullProjectile
 
 class Game:
     def __init__(self):
+        self.background = None
         pygame.init()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.background = pygame.image.load("assets/backgrounds/graveyard.jpg").convert()
+
+        pygame.display.set_caption("What's This")
+        self.clock = pygame.time.Clock()
+        pygame.mixer.music.load('assets/WhatsThis.ogg')
+        pygame.mixer.music.play()
+
         pygame.display.set_caption("What's This")
         self.clock = pygame.time.Clock()
         pygame.mixer.music.load('assets/WhatsThis.ogg')
@@ -47,7 +55,7 @@ class Game:
                     self.projectiles.append(projectile)
 
     def draw(self):
-        self.screen.fill((0, 0, 0))
+        self.screen.blit(self.background, (0, 0))  # ✅ MUST be first!
         self.player.draw(self.screen)
         self.enemy.draw(self.screen)
         draw_score(self.screen, self.score)

@@ -2,7 +2,7 @@ import pygame
 from .config import RED, GREEN
 
 class Enemy:
-    def __init__(self, x=500, y=300):
+    def __init__(self, x=500, y=400):
         self.max_health = 300
         self.health = self.max_health
         self.x = x

@@ -3,7 +3,7 @@ import pygame
 # Constants
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
-BPM = 120
+BPM = 180
 BEAT_INTERVAL = 60 / BPM
 TOLERANCE = 0.2
 
