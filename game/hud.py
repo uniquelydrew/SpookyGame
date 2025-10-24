@@ -1,4 +1,6 @@
 import pygame
+
+from . import SCREEN_WIDTH
 from .config import FONT, WHITE, GREEN, RED
 
 judgment_colors = {
@@ -20,3 +22,7 @@ def draw_judgment(surface, text, pos, timer):
         color = judgment_colors[text]
         label = FONT.render(text, True, color)
         surface.blit(label, pos)
+
+def draw_pumpkins(surface, pumpkins):
+    score_text = FONT.render(f"Pumpkins: {pumpkins}", True, WHITE)
+    surface.blit(score_text, (SCREEN_WIDTH-200, 20))

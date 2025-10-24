@@ -3,7 +3,7 @@ import time
 from .config import SCREEN_WIDTH, SCREEN_HEIGHT, WHITE, GRAVEYARD, TRACK
 from .player import Player
 from .enemy import Enemy
-from .hud import draw_score, draw_win_message, draw_judgment
+from .hud import draw_score, draw_win_message, draw_judgment, draw_pumpkins
 from .beat_tracker import BeatTracker
 from .projectile import SkullProjectile
 
@@ -29,6 +29,7 @@ class Game:
         self.enemy = Enemy()
         self.beat_tracker = BeatTracker()
         self.score = 0
+        self.pumpkins = 0
         self.projectiles = []
         self.judgment_text = ""
         self.judgment_timer = 0
@@ -65,14 +66,17 @@ class Game:
         self.player.draw(self.screen)
         self.enemy.draw(self.screen)
         draw_score(self.screen, self.score)
+        draw_pumpkins(self.screen, self.pumpkins)
         for projectile in self.projectiles:
             projectile.draw(self.screen)
 
         if self.judgment_timer > 0:
-            draw_judgment(self.screen, self.judgment_text, (SCREEN_WIDTH // 2 - 60, 200), self.judgment_timer)
+            draw_judgment(self.screen, self.judgment_text, (SCREEN_WIDTH // 2 - 30, 200), self.judgment_timer)
 
         if self.enemy.is_defeated():
             draw_win_message(self.screen)
+            self.pumpkins += 1
+            self.spawn_enemy()
         pygame.display.flip()
 
     def update_projectiles(self):
