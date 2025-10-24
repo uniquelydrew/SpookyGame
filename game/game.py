@@ -71,7 +71,7 @@ class Game:
             projectile.draw(self.screen)
 
         if self.judgment_timer > 0:
-            draw_judgment(self.screen, self.judgment_text, (SCREEN_WIDTH // 2 - 30, 200), self.judgment_timer)
+            draw_judgment(self.screen, self.judgment_text, (SCREEN_WIDTH // 2 - 50, 200), self.judgment_timer)
 
         if self.enemy.is_defeated():
             draw_win_message(self.screen)

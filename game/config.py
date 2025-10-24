@@ -17,7 +17,10 @@ GREEN = (0, 255, 0)
 
 # Fonts
 pygame.font.init()
-FONT = pygame.font.SysFont("Arial", 28)
+FONT = pygame.font.Font("assets/fonts/Bangers-Regular.ttf", 28)
+FONT_SMALL = pygame.font.Font("assets/fonts/Bangers-Regular.ttf", 24)
+FONT_MEDIUM = pygame.font.Font("assets/fonts/Bangers-Regular.ttf", 36)
+FONT_LARGE = pygame.font.Font("assets/fonts/Bangers-Regular.ttf", 60)
 
 # Asset Paths
 SKELETON = 'assets/sprites/skeleton.png'
