@@ -11,6 +11,7 @@ a = Analysis(
         ('assets/sprites/skull.png', 'assets/sprites'),
         ('assets/sprites/pumpkin.png', 'assets/sprites'),
         ('assets/WhatsThis.ogg', 'assets'),
+        ('assets/fonts/Bangers-Regular.ttf', 'assets/fonts'),
     ],
     hiddenimports=[],
     hookspath=[],
