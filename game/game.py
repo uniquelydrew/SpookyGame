@@ -61,8 +61,19 @@ class Game:
     def update_projectiles(self):
         for projectile in self.projectiles[:]:
             projectile.update()
+
             if projectile.off_screen(self.screen.get_width()):
                 self.projectiles.remove(projectile)
-            elif projectile.collides_with(self.enemy.image.get_rect(topleft=(self.enemy.x, self.enemy.y))):
+                continue
+
+            enemy_rect = self.enemy.image.get_rect(topleft=(self.enemy.x, self.enemy.y))
+
+            if projectile.collides_with(enemy_rect):
                 self.enemy.take_damage(projectile.damage)
+                self.score += projectile.damage
                 self.projectiles.remove(projectile)
+                print(f"Hit! Damage: {projectile.damage}, New Score: {self.score}")
+
+    def spawn_enemy(self):
+        from .enemy import Enemy  # if not already imported
+        self.enemy = Enemy()  # Replace with new instance
