@@ -1,6 +1,6 @@
 import pygame
 
-from . import SCREEN_WIDTH
+from .config import SCREEN_WIDTH
 from .config import FONT, WHITE, GREEN, RED, FONT_LARGE
 
 judgment_colors = {
