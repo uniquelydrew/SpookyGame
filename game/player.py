@@ -14,7 +14,7 @@ class Player:
 
     def __init__(self):
         self.image = pygame.image.load(SKELETON).convert_alpha()
-        self.rect = self.image.get_rect(center=(400, 500))
+        self.rect = self.image.get_rect(center=(220, 470))
         self.speed = 5
         self.health = 100
 
