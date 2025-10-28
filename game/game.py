@@ -1,19 +1,25 @@
 import pygame
 import time
-from .config import SCREEN_WIDTH, SCREEN_HEIGHT, WHITE, GRAVEYARD, TRACK
+from .config import SCREEN_WIDTH, SCREEN_HEIGHT, WHITE, GRAVEYARD, TRACK, BEAT_INTERVAL
 from .player import Player
 from .enemy import Enemy
 from .hud import draw_score, draw_win_message, draw_judgment, draw_pumpkins
 from .beat_tracker import BeatTracker
 from .projectile import SkullProjectile
 
+
+def _now() -> float:
+    return pygame.time.get_ticks() / 1000.0
+
+
 class Game:
+
     def __init__(self):
         self.background = None
         pygame.init()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.background = pygame.image.load(GRAVEYARD).convert()
-
+        self.start_time_sec = pygame.time.get_ticks() / 1000.0
         pygame.display.set_caption("What's This")
         self.clock = pygame.time.Clock()
         pygame.mixer.music.load(TRACK)
@@ -69,6 +75,15 @@ class Game:
         draw_pumpkins(self.screen, self.pumpkins)
         for projectile in self.projectiles:
             projectile.draw(self.screen)
+
+        elapsed = _now() - self.start_time_sec
+        phase = (elapsed % (BEAT_INTERVAL*2)) / (BEAT_INTERVAL*2)
+        radius = 40 + int(60 * phase)
+        alpha = 255 - int(255 * phase)
+        surf = pygame.Surface((radius * 2, radius * 2), pygame.SRCALPHA)
+        pygame.draw.circle(surf, (255, 255, 255, alpha), (radius, radius), radius, 3)
+        px, py = self.player.rect.center
+        self.screen.blit(surf, (px - radius, py - radius))
 
         if self.judgment_timer > 0:
             draw_judgment(self.screen, self.judgment_text, (SCREEN_WIDTH // 2 - 50, 200), self.judgment_timer)
